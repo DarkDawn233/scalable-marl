@@ -148,6 +148,10 @@ class BattleEnvironment(Environment):
 
     def domain_value(self):
         return self.opponent_kills - self.agent_kills
+    
+    def win_rate(self):
+        battles_won = self.opponent_kills >= self.nr_agents and self.agent_kills < self.nr_agents
+        return battles_won
 
     def is_done(self):
         time_limit_reached = super(BattleEnvironment, self).is_done()
