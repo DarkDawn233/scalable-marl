@@ -9,11 +9,15 @@ def make(params):
     domain_name = params["domain_name"]
     if domain_name.startswith("Battle-"):
         params["nr_epochs"] = 2000
+        params["t_max"] = 2050000
+        params["test_interval"] = 10000
         return battle.make(params)
     if domain_name.startswith("Warehouse-"):
         params["nr_epochs"] = 3000
         return warehouse.make(params)
     if domain_name.startswith("GaussianSqueeze-"):
         params["nr_epochs"] = 10000
+        params["t_max"] = 205000
+        params["test_interval"] = 1000
         return gaussian_squeeze.make(params)
     raise ValueError("Unknown domain '{}'".format(domain_name))
