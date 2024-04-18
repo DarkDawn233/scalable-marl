@@ -92,12 +92,12 @@ def run_training(env, controller, params):
     # for i in range(params["nr_epochs"]):
     while time_step <= params["t_max"]:
         training_result = run_episodes(episodes_per_epoch, env, controller, params, training_mode=True)
+        time_step += training_result["time_step"]
         if time_step - last_log >= params["test_interval"]:
             last_log = time_step
             sampled_subteams.append(training_result["sampled_subteams"])
             max_subteams.append(training_result["max_subteams"])
-            print("Finished epoch {} ({}, {}, {} agents ({})):".format(i, params["algorithm_name"], params["domain_name"], params["nr_agents"], params["nr_subteams"]))
-            time_step += training_result["time_step"]
+            print("Finished step {} ({}, {}, {} agents ({})):".format(time_step, params["algorithm_name"], params["domain_name"], params["nr_agents"], params["nr_subteams"]))
             time_steps.append(time_step)
             result = run_episodes(evaluations_per_epoch, env, controller, params, training_mode=False)
             print("- Discounted return:  ", numpy.mean(result["discounted_returns"]))
@@ -105,7 +105,9 @@ def run_training(env, controller, params):
             domain_value = float(numpy.mean(result["domain_values"]))
             domain_values.append(domain_value)
             if "win_rates" in result:
-                win_rates.append(float(numpy.mean(result["win_rates"])))
+                win_rate = float(numpy.mean(result["win_rates"]))
+                win_rates.append(win_rate)
+                print("- Win rate: ", win_rate)
             print("- Domain value:", domain_value)
             for return_list, new_returns in zip(discounted_returns, result["discounted_returns"]):
                 return_list.append(float(numpy.mean(new_returns)))

@@ -22,6 +22,10 @@ class GaussianSqueezeEnvironment(Environment):
 
     def domain_value(self):
         return self.objective_value
+    
+    # 返回的win_rate在本环境中就是objective_value
+    def win_rate(self):
+        return self.objective_value
 
     def perform_step(self, joint_action):
         rewards = super(GaussianSqueezeEnvironment, self).perform_step(joint_action)
